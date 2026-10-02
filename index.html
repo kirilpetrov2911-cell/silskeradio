@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="uk" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>СІЛЬСЬКЕ РАДІО — Слухай по-сільському</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            bg: '#B29D81',
+                            card: '#EFE7DA',
+                            accent: '#826C52',
+                            text: '#4A3B2C',
+                            dark: '#2E2318',
+                            gold: '#D89B48',
+                            light: '#F8F5F0'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #B29D81;
+            background-image: radial-gradient(#C4B299 1.5px, transparent 1.5px);
+            background-size: 28px 28px;
+        }
+
+        .eq-bar {
+            animation: bounce 1.2s ease-in-out infinite alternate;
+        }
+        .eq-bar:nth-child(1) { animation-delay: 0.1s; }
+        .eq-bar:nth-child(2) { animation-delay: 0.4s; }
+        .eq-bar:nth-child(3) { animation-delay: 0.2s; }
+        .eq-bar:nth-child(4) { animation-delay: 0.5s; }
+        .eq-bar:nth-child(5) { animation-delay: 0.3s; }
+
+        @keyframes bounce {
+            0% { height: 15%; }
+            100% { height: 100%; }
+        }
+
+        .paused .eq-bar {
+            animation-play-state: paused;
+            height: 15% !important;
+        }
+
+        input[type=range] {
+            accent-color: #826C52;
+        }
+    </style>
+</head>
+<body class="font-sans text-brand-dark min-h-screen flex flex-col justify-between selection:bg-brand-accent selection:text-white">
+
+    <header class="sticky top-0 z-50 bg-brand-card/90 backdrop-blur-md border-b border-brand-accent/20 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <a href="index.html" class="flex items-center space-x-3 group">
+                <div class="w-12 h-12 bg-white rounded-2xl p-1.5 shadow-md flex items-center justify-center border border-brand-bg/20 group-hover:scale-105 transition-transform">
+                    <svg viewBox="0 0 100 100" class="w-full h-full text-brand-accent">
+                        <path d="M 30,20 C 50,10 80,15 90,35 C 100,55 90,80 70,90 C 50,100 25,95 12,80 C 0,65 10,30 30,20 Z" fill="#B29D81" stroke="#826C52" stroke-width="4"/>
+                        <ellipse cx="35" cy="35" rx="3" ry="2" fill="#5A4735" />
+                        <ellipse cx="65" cy="40" rx="4" ry="2.5" fill="#5A4735" />
+                        <ellipse cx="45" cy="65" rx="3" ry="1.8" fill="#5A4735" />
+                        <ellipse cx="70" cy="70" rx="3.5" ry="2" fill="#5A4735" />
+                    </svg>
+                </div>
+                <div>
+                    <span class="text-lg sm:text-xl font-extrabold tracking-tight text-brand-text block leading-none">СІЛЬСЬКЕ РАДІО</span>
+                    <span class="text-[10px] sm:text-xs font-semibold text-brand-accent tracking-widest uppercase block mt-0.5">Слухай по-сільському</span>
+                </div>
+            </a>
+
+            <nav class="hidden md:flex items-center space-x-6 text-sm font-bold text-brand-text">
+                <a href="index.html#player" class="hover:text-brand-accent transition-colors">Плеер</a>
+                <a href="about.html" class="hover:text-brand-accent transition-colors">Про нас</a>
+                <a href="index.html#schedule" class="hover:text-brand-accent transition-colors">Розклад</a>
+                <a href="index.html#chat" class="hover:text-brand-accent transition-colors">Привіти</a>
+            </nav>
+
+            <button id="nav-play-btn" class="bg-brand-accent hover:bg-brand-text text-white px-5 py-2.5 rounded-full text-xs sm:text-sm font-extrabold shadow-md transition-all flex items-center space-x-2">
+                <i class="fa-solid fa-play"></i>
+                <span class="hidden sm:inline">Увімкнути ефір</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full space-y-12 flex-grow">
+        
+        <section id="player" class="bg-white rounded-3xl p-6 sm:p-10 shadow-xl border border-brand-card relative overflow-hidden">
+            <div class="absolute -right-16 -top-16 w-64 h-64 bg-brand-card rounded-full blur-3xl opacity-50 pointer-events-none"></div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="inline-flex items-center space-x-2 bg-brand-card px-3.5 py-1.5 rounded-full border border-brand-accent/20">
+                        <span id="status-dot" class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span id="status-text" class="text-xs font-bold text-brand-text uppercase tracking-wider">Цілодобовий ефір 24/7</span>
+                    </div>
+
+                    <h1 class="text-3xl sm:text-5xl font-extrabold text-brand-text tracking-tight leading-tight">
+                        Музика, яка об'єднує серця та поля!
+                    </h1>
+
+                    <p class="text-brand-text/80 text-sm sm:text-base leading-relaxed">
+                        Вмикай «Сільське Радіо» де б ти не був. Найкращі світові та вітчизняні хіти, лампова атмосфера та справжній вайб без зайвої реклами.
+                    </p>
+
+                    <div class="bg-brand-light p-4 rounded-2xl border border-brand-card flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-brand-accent text-white rounded-xl flex items-center justify-center shrink-0 shadow-sm">
+                            <i class="fa-solid fa-compact-disc text-xl animate-spin" style="animation-duration: 8s;"></i>
+                        </div>
+                        <div class="overflow-hidden">
+                            <p class="text-[10px] uppercase tracking-wider font-extrabold text-brand-accent">Зараз грає в ефірі</p>
+                            <p id="current-track-title" class="text-sm sm:text-base font-bold text-brand-text truncate">«Сільське Радіо» — Автоматичний мікс хитів</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 bg-brand-card p-6 sm:p-8 rounded-3xl shadow-inner border border-brand-bg/30 flex flex-col items-center text-center">
+                    
+                    <div class="relative w-40 h-40 sm:w-48 sm:h-48 my-2">
+                        <div id="pulse-ring" class="absolute inset-0 rounded-full bg-brand-accent/15 scale-110 opacity-0 transition-all duration-700"></div>
+                        <div class="w-full h-full bg-white rounded-full p-4 shadow-md border-4 border-brand-bg/40 flex items-center justify-center relative overflow-hidden">
+                            <div class="text-center p-2">
+                                <i class="fa-solid fa-radio text-5xl sm:text-6xl text-brand-accent mb-1"></i>
+                                <span class="text-[10px] font-extrabold text-brand-text block uppercase tracking-widest">LIVE STREAM</span>
+                            </div>
+
+                            <div id="eq-container" class="absolute bottom-5 flex items-end justify-center space-x-1.5 h-8 w-24 paused">
+                                <div class="eq-bar w-1.5 bg-brand-accent rounded-full"></div>
+                                <div class="eq-bar w-1.5 bg-brand-accent rounded-full"></div>
+                                <div class="eq-bar w-1.5 bg-brand-accent rounded-full"></div>
+                                <div class="eq-bar w-1.5 bg-brand-accent rounded-full"></div>
+                                <div class="eq-bar w-1.5 bg-brand-accent rounded-full"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="main-play-btn" class="mt-6 w-20 h-20 sm:w-22 sm:h-22 bg-brand-accent hover:bg-brand-text text-white rounded-full flex items-center justify-center shadow-xl hover:scale-105 transition-all duration-300 focus:outline-none">
+                        <i id="play-icon" class="fa-solid fa-play text-2xl sm:text-3xl ml-1"></i>
+                    </button>
+
+                    <div class="w-full mt-6 flex items-center space-x-3 bg-white/80 px-4 py-2.5 rounded-2xl shadow-sm border border-brand-bg/20">
+                        <button id="mute-btn" class="text-brand-accent hover:text-brand-text transition-colors">
+                            <i id="mute-icon" class="fa-solid fa-volume-high text-lg"></i>
+                        </button>
+                        <input id="volume-slider" type="range" min="0" max="1" step="0.01" value="0.8" class="w-full h-1.5 bg-brand-bg/30 rounded-lg appearance-none cursor-pointer">
+                    </div>
+
+                    <audio id="audio-stream" preload="none"></audio>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Schedule Section -->
+        <section id="schedule" class="bg-white rounded-3xl p-6 sm:p-10 shadow-xl border border-brand-card">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-8 pb-4 border-b border-brand-card">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-brand-text">Розклад програм</h2>
+                    <p class="text-xs sm:text-sm text-brand-accent font-medium mt-1">Щодня на хвилях «Сільського Радіо»</p>
+                </div>
+                <div class="mt-4 sm:mt-0 bg-brand-card px-4 py-2 rounded-xl text-xs font-bold text-brand-text inline-block">
+                    <i class="fa-solid fa-calendar-days text-brand-accent mr-1.5"></i> Щодня без вихідних
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-brand-light p-6 rounded-2xl border border-brand-card">
+                    <span class="text-xs font-extrabold text-brand-accent uppercase tracking-wider block mb-1">08:00 — 12:00</span>
+                    <h4 class="text-lg font-bold text-brand-text mb-2">Ранкова зорька</h4>
+                    <p class="text-xs text-brand-dark/70">Бадьорі ранкові мікси, які допоможуть прокинутися і налаштуватися на продуктивний день.</p>
+                </div>
+
+                <div class="bg-brand-light p-6 rounded-2xl border border-brand-card">
+                    <span class="text-xs font-extrabold text-brand-accent uppercase tracking-wider block mb-1">12:00 — 18:00</span>
+                    <h4 class="text-lg font-bold text-brand-text mb-2">Сільський Драйв</h4>
+                    <p class="text-xs text-brand-dark/70">Найкращі хіти денного ефіру, енергійні треки та гарний настрій для роботи чи відпочинку.</p>
+                </div>
+
+                <div class="bg-brand-light p-6 rounded-2xl border border-brand-card">
+                    <span class="text-xs font-extrabold text-brand-accent uppercase tracking-wider block mb-1">18:00 — 08:00</span>
+                    <h4 class="text-lg font-bold text-brand-text mb-2">Вечірні посиденьки</h4>
+                    <p class="text-xs text-brand-dark/70">Спокійна мелодійна музика та розслаблюючий вайб для затишного вечора.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chat Section -->
+        <section id="chat" class="bg-white rounded-3xl p-6 sm:p-10 shadow-xl border border-brand-card">
+            <div class="max-w-2xl mx-auto">
+                <div class="text-center mb-8">
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-brand-text">Дошка приветов та побажань</h2>
+                    <p class="text-xs sm:text-sm text-brand-accent font-medium mt-1">Залиш привіт чи гарне побажання для всіх слухачів</p>
+                </div>
+
+                <form id="greeting-form" class="space-y-4 bg-brand-card p-6 rounded-2xl border border-brand-bg/30 mb-8">
+                    <div>
+                        <label class="block text-xs font-bold text-brand-text mb-1 uppercase tracking-wider">Твоє ім'я чи нік</label>
+                        <input type="text" id="author-input" required placeholder="Наприклад: Дядя Василь" class="w-full px-4 py-3 rounded-xl border border-brand-bg/40 text-brand-dark bg-white focus:outline-none focus:border-brand-accent text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-brand-text mb-1 uppercase tracking-wider">Повідомлення чи привіт</label>
+                        <textarea id="message-input" required rows="3" placeholder="Пиши сюди свій привіт слухачам радіо..." class="w-full px-4 py-3 rounded-xl border border-brand-bg/40 text-brand-dark bg-white focus:outline-none focus:border-brand-accent text-sm resize-none"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-brand-accent hover:bg-brand-text text-white py-3 rounded-xl font-extrabold text-sm shadow-md transition-all">
+                        Надіслати в ефір
+                    </button>
+                </form>
+
+                <div id="greetings-list" class="space-y-4"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-brand-dark text-brand-card mt-16 py-10 border-t border-brand-accent/30">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center text-center space-y-4">
+            
+            <div class="flex items-center justify-center space-x-2">
+                <div class="w-8 h-8 rounded-full border border-brand-card/60 flex items-center justify-center text-white text-xs font-extrabold bg-brand-accent/30">
+                    C
+                </div>
+                <span class="text-sm font-bold tracking-wide text-brand-card">2026 СІЛЬСЬКЕ РАДІО</span>
+            </div>
+
+            <div class="flex space-x-6 text-brand-card/70 text-sm">
+                <a href="index.html" class="hover:text-white transition-colors">Головна</a>
+                <a href="about.html" class="hover:text-white transition-colors">Про нас</a>
+                <a href="index.html#schedule" class="hover:text-white transition-colors">Розклад</a>
+                <a href="index.html#chat" class="hover:text-white transition-colors">Привіти</a>
+            </div>
+
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const audio = document.getElementById('audio-stream');
+            const mainPlayBtn = document.getElementById('main-play-btn');
+            const navPlayBtn = document.getElementById('nav-play-btn');
+            const playIcon = document.getElementById('play-icon');
+            const volumeSlider = document.getElementById('volume-slider');
+            const muteBtn = document.getElementById('mute-btn');
+            const muteIcon = document.getElementById('mute-icon');
+            const eqContainer = document.getElementById('eq-container');
+            const pulseRing = document.getElementById('pulse-ring');
+            const statusDot = document.getElementById('status-dot');
+            const statusText = document.getElementById('status-text');
+
+            const streamUrl = 'http://uk7frenew.listen2myradio.com:29201/;stream.mp3';
+            let isPlaying = false;
+            let lastVolume = 0.8;
+
+            audio.src = streamUrl;
+            audio.volume = lastVolume;
+
+            function togglePlay() {
+                if (isPlaying) {
+                    audio.pause();
+                    audio.src = '';
+                    setPlayingState(false);
+                } else {
+                    audio.src = streamUrl;
+                    audio.load();
+                    audio.play().then(() => {
+                        setPlayingState(true);
+                    }).catch(err => {
+                        console.error('Stream playback error:', err);
+                        alert('Не вдалося підключитися до потоку Listen2MyRadio.');
+                        setPlayingState(false);
+                    });
+                }
+            }
+
+            function setPlayingState(playing) {
+                isPlaying = playing;
+                if (isPlaying) {
+                    playIcon.classList.remove('fa-play', 'ml-1');
+                    playIcon.classList.add('fa-pause');
+                    navPlayBtn.innerHTML = '<i class="fa-solid fa-pause"></i><span class="hidden sm:inline">Пауза</span>';
+                    eqContainer.classList.remove('paused');
+                    pulseRing.classList.remove('opacity-0');
+                    pulseRing.classList.add('opacity-100');
+                    statusDot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse';
+                    statusText.textContent = 'В ЕФІРІ 24/7';
+                } else {
+                    playIcon.classList.remove('fa-pause');
+                    playIcon.classList.add('fa-play', 'ml-1');
+                    navPlayBtn.innerHTML = '<i class="fa-solid fa-play"></i><span class="hidden sm:inline">Увімкнути ефір</span>';
+                    eqContainer.classList.add('paused');
+                    pulseRing.classList.remove('opacity-100');
+                    pulseRing.classList.add('opacity-0');
+                    statusDot.className = 'w-2.5 h-2.5 rounded-full bg-amber-500';
+                    statusText.textContent = 'ПАУЗА';
+                }
+            }
+
+            mainPlayBtn.addEventListener('click', togglePlay);
+            navPlayBtn.addEventListener('click', togglePlay);
+
+            volumeSlider.addEventListener('input', (e) => {
+                const val = e.target.value;
+                audio.volume = val;
+                updateVolumeIcon(val);
+            });
+
+            function updateVolumeIcon(val) {
+                if (val == 0) {
+                    muteIcon.className = 'fa-solid fa-volume-xmark text-lg text-red-400';
+                } else if (val < 0.5) {
+                    muteIcon.className = 'fa-solid fa-volume-low text-lg';
+                } else {
+                    muteIcon.className = 'fa-solid fa-volume-high text-lg';
+                }
+            }
+
+            muteBtn.addEventListener('click', () => {
+                if (audio.volume > 0) {
+                    lastVolume = audio.volume;
+                    audio.volume = 0;
+                    volumeSlider.value = 0;
+                } else {
+                    audio.volume = lastVolume || 0.8;
+                    volumeSlider.value = audio.volume;
+                }
+                updateVolumeIcon(audio.volume);
+            });
+
+            const greetingForm = document.getElementById('greeting-form');
+            const authorInput = document.getElementById('author-input');
+            const messageInput = document.getElementById('message-input');
+            const greetingsList = document.getElementById('greetings-list');
+
+            let greetings = JSON.parse(localStorage.getItem('silskoeradio_greetings')) || [
+                { author: 'Баба Галя', text: 'Привіт усім сусідам з Полтавщини! Найкраще радіо!', time: 'Щойно' },
+                { author: 'Дід Петро', text: 'Слухаю в гаражі поки лагоджу мотоцикл. Музика бомба!', time: '10 хв тому' }
+            ];
+
+            function renderGreetings() {
+                greetingsList.innerHTML = '';
+                greetings.forEach((item) => {
+                    const div = document.createElement('div');
+                    div.className = 'bg-brand-light p-4 rounded-2xl border border-brand-card';
+                    div.innerHTML = `
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="font-bold text-brand-text text-sm">${escapeHtml(item.author)}</span>
+                            <span class="text-[10px] text-brand-accent font-semibold">${escapeHtml(item.time)}</span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-brand-dark/90">${escapeHtml(item.text)}</p>
+                    `;
+                    greetingsList.appendChild(div);
+                });
+            }
+
+            if (greetingForm) {
+                greetingForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const author = authorInput.value.trim();
+                    const text = messageInput.value.trim();
+                    if (author && text) {
+                        greetings.unshift({ author, text, time: 'Щойно' });
+                        if (greetings.length > 10) greetings.pop();
+                        localStorage.setItem('silskoeradio_greetings', JSON.stringify(greetings));
+                        authorInput.value = '';
+                        messageInput.value = '';
+                        renderGreetings();
+                    }
+                });
+            }
+
+            function escapeHtml(str) {
+                return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+            }
+
+            renderGreetings();
+        });
+    </script>
+</body>
+</html>

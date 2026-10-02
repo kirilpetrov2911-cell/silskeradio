@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="uk" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Про нас — СІЛЬСЬКЕ РАДІО</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            bg: '#B29D81',
+                            card: '#EFE7DA',
+                            accent: '#826C52',
+                            text: '#4A3B2C',
+                            dark: '#2E2318',
+                            gold: '#D89B48',
+                            light: '#F8F5F0'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #B29D81;
+            background-image: radial-gradient(#C4B299 1.5px, transparent 1.5px);
+            background-size: 28px 28px;
+        }
+    </style>
+</head>
+<body class="font-sans text-brand-dark min-h-screen flex flex-col justify-between selection:bg-brand-accent selection:text-white">
+
+    <header class="sticky top-0 z-50 bg-brand-card/90 backdrop-blur-md border-b border-brand-accent/20 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <a href="index.html" class="flex items-center space-x-3 group">
+                <div class="w-12 h-12 bg-white rounded-2xl p-1.5 shadow-md flex items-center justify-center border border-brand-bg/20 group-hover:scale-105 transition-transform">
+                    <svg viewBox="0 0 100 100" class="w-full h-full text-brand-accent">
+                        <path d="M 30,20 C 50,10 80,15 90,35 C 100,55 90,80 70,90 C 50,100 25,95 12,80 C 0,65 10,30 30,20 Z" fill="#B29D81" stroke="#826C52" stroke-width="4"/>
+                        <ellipse cx="35" cy="35" rx="3" ry="2" fill="#5A4735" />
+                        <ellipse cx="65" cy="40" rx="4" ry="2.5" fill="#5A4735" />
+                        <ellipse cx="45" cy="65" rx="3" ry="1.8" fill="#5A4735" />
+                        <ellipse cx="70" cy="70" rx="3.5" ry="2" fill="#5A4735" />
+                    </svg>
+                </div>
+                <div>
+                    <span class="text-lg sm:text-xl font-extrabold tracking-tight text-brand-text block leading-none">СІЛЬСЬКЕ РАДІО</span>
+                    <span class="text-[10px] sm:text-xs font-semibold text-brand-accent tracking-widest uppercase block mt-0.5">Слухай по-сільському</span>
+                </div>
+            </a>
+
+            <nav class="hidden md:flex items-center space-x-6 text-sm font-bold text-brand-text">
+                <a href="index.html#player" class="hover:text-brand-accent transition-colors">Плеер</a>
+                <a href="about.html" class="text-brand-accent transition-colors">Про нас</a>
+                <a href="index.html#schedule" class="hover:text-brand-accent transition-colors">Розклад</a>
+                <a href="index.html#chat" class="hover:text-brand-accent transition-colors">Привіти</a>
+            </nav>
+
+            <a href="index.html#player" class="bg-brand-accent hover:bg-brand-text text-white px-5 py-2.5 rounded-full text-xs sm:text-sm font-extrabold shadow-md transition-all flex items-center space-x-2">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span class="hidden sm:inline">На головну</span>
+            </a>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full flex-grow flex items-center justify-center">
+        
+        <!-- About Section Page -->
+        <section class="bg-white w-full rounded-3xl p-8 sm:p-12 shadow-xl border border-brand-card text-center space-y-8">
+            <div class="max-w-lg mx-auto space-y-2">
+                <span class="text-xs font-extrabold text-brand-accent uppercase tracking-widest block">Про нас</span>
+                <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-text">Мережа мовлення</h1>
+            </div>
+
+            <div class="bg-brand-card p-6 sm:p-8 rounded-3xl border border-brand-bg/40 max-w-xl mx-auto text-center space-y-6 shadow-inner">
+                <div class="rounded-2xl overflow-hidden shadow-md border border-white/60 bg-white p-3 inline-block">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Ukraine_map_ru.png" alt="Мапа України" class="max-w-full h-auto mx-auto rounded-xl object-contain" style="max-height: 280px;">
+                </div>
+                
+                <div class="space-y-3 bg-brand-light p-6 rounded-2xl border border-brand-card">
+                    <p class="text-base sm:text-lg font-extrabold text-brand-text leading-snug">
+                        Нажаль СІЛЬСЬКЕ РАДІО не можна послухати в автомобілі!
+                    </p>
+                    <p class="text-xs sm:text-sm text-brand-accent font-medium leading-relaxed">
+                        Зате через інтернет ловить скрізь, де є мережа та гарний настрій.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-brand-dark text-brand-card mt-16 py-10 border-t border-brand-accent/30">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center text-center space-y-4">
+            
+            <div class="flex items-center justify-center space-x-2">
+                <div class="w-8 h-8 rounded-full border border-brand-card/60 flex items-center justify-center text-white text-xs font-extrabold bg-brand-accent/30">
+                    C
+                </div>
+                <span class="text-sm font-bold tracking-wide text-brand-card">2026 СІЛЬСЬКЕ РАДІО</span>
+            </div>
+
+            <div class="flex space-x-6 text-brand-card/70 text-sm">
+                <a href="index.html" class="hover:text-white transition-colors">Головна</a>
+                <a href="about.html" class="hover:text-white transition-colors">Про нас</a>
+                <a href="index.html#schedule" class="hover:text-white transition-colors">Розклад</a>
+                <a href="index.html#chat" class="hover:text-white transition-colors">Привіти</a>
+            </div>
+
+        </div>
+    </footer>
+
+</body>
+</html>
